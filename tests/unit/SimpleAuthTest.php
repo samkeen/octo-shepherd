@@ -19,7 +19,7 @@ class SimpleAuthTest extends \PHPUnit_Framework_TestCase
     {
         
         $auth = new SimpleAuth('username', 'password');
-        $curl = new 
+//        $curl = new 
         
     }
 }
