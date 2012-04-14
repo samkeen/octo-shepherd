@@ -6,7 +6,9 @@ spl_autoload_register(
       static $classes = null;
       if ($classes === null) {
          $classes = array(
-            'phpgithubapi\\auth\\simpleauthtest' => '/unit/SimpleAuthTest.php'
+            'octoshepherd\\generalshepherdtest' => '/unit/GeneralShepherdTest.php',
+                'octoshepherd\\mockresponsefactory' => '/response_stubs/MockResponseFactory.php',
+                'octoshepherd\\usertest' => '/unit/UserTest.php'
           );
       }
       $cn = strtolower($class);

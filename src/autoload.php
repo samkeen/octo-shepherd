@@ -4,7 +4,7 @@ spl_autoload_register(
       static $classes = null;
       if ($classes === null) {
          $classes = array(
-            'phpgithubapi\\auth\\simpleauth' => '/Auth/SimpleAuth.php',
+            'octoshepherd\\shepherd' => '/Shepherd.php',
                 'presta\\curler' => '/vendor/presta/src/Curler.php',
                 'presta\\prestatestbase' => '/vendor/presta/tests/PrestaTestBase.php',
                 'presta\\request' => '/vendor/presta/src/Request.php',
