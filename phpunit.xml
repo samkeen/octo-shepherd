@@ -27,6 +27,7 @@
         <whitelist addUncoveredFilesFromWhitelist="true">
           <directory suffix=".php">src</directory>
           <exclude>
+            <directory>src/vendor</directory>
             <file>src/autoload.php</file>
           </exclude>
         </whitelist>

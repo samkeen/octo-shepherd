@@ -5,13 +5,13 @@
  *
  * Replace this test with your own (and use your own namespace)
  */
-namespace Banner;
+namespace Phpgithubapi\Auth;
 
-class ClassOneTest extends \PHPUnit_Framework_TestCase
+class SimpleAuthTest extends \PHPUnit_Framework_TestCase
 {
     function testInstantiateNoExplotions()
     {
-        $nz = new ClassOne();
+        new SimpleAuth();
         $this->assertTrue(true, "Just testing that we are able to Instantiate");
     }
 }

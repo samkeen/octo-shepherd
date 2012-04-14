@@ -145,6 +145,9 @@
             <arg path="${basedir}/src/autoload.php"/>
             <arg value="--template"/>
             <arg path="${builddir}/src_autoload.php.in"/>
+            <arg value="--exclude"/>
+            <arg path="**/*Test.php"/>
+            
             <arg path="${basedir}/src"/>
         </exec>
 
@@ -246,7 +249,7 @@
             <arg value="--directory"/>
             <arg path="${srcdir}"/>
             <arg value="--ignore"/>
-            <arg value="autoload.php"/>
+            <arg value="autoload.php,**/vendor/*.*"/>
             <arg value="--target"/>
             <arg path="${builddir}/api"/>
             <arg value="--output"/>

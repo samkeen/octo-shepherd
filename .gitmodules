@@ -1,0 +1,3 @@
+[submodule "src/vendor/presta"]
+	path = src/vendor/presta
+	url = git@github.com:samkeen/presta.git

@@ -4,3 +4,5 @@ build/code-browser
 build/coverage
 build/logs
 build/pdepend
+src/conf/conf.php
+src/ClassTest.php
