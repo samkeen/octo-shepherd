@@ -10,5 +10,9 @@ namespace Phpgithubapi\Auth;
  */
 class SimpleAuth
 {
+    function __construct()
+    {
+        
+    }
 
 }

@@ -14,4 +14,12 @@ class SimpleAuthTest extends \PHPUnit_Framework_TestCase
         new SimpleAuth();
         $this->assertTrue(true, "Just testing that we are able to Instantiate");
     }
+    
+    function testAuthSuccess()
+    {
+        
+        $auth = new SimpleAuth('username', 'password');
+        $curl = new 
+        
+    }
 }
