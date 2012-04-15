@@ -1,13 +1,15 @@
 <?php
 /**
- * Original Author: sam
+ * Original Author: sam keen
  * Date: 4/14/12
  * Time: 9:58 AM
+ * @package OctoShepherd
  */
 namespace OctoShepherd;
 use Presta\Request;
 /**
  * Primary class for herding octocats
+ * @package OctoShepherd
  */
 class Shepherd
 {
@@ -16,6 +18,7 @@ class Shepherd
         'auth-name'          => null,
         'auth-password'      => null,
     );
+    private $last_error = null;
     /**
      * @var \Presta\Request
      */
@@ -40,15 +43,53 @@ class Shepherd
     
     function me()
     {
-        return $this->curler
-            ->uri("{$this->attributes['github-api-uri']}/user")
-            ->auth($this->attributes['auth-name'], $this->attributes['auth-password'])
-            ->get();
+        return $this->github_api_request('/user');
+    }
+    
+    function users($username)
+    {
+        if(empty($username))
+        {
+            throw new \InvalidArgumentException(
+                __METHOD__." Empty values for param \$username is invalid"
+            );
+        }
+        $username = urlencode($username);
+        return $this->github_api_request("/users/{$username}");
     }
     
     function array_dump()
     {
         return $this->attributes;
+    }
+    
+    function last_error()
+    {
+        return $this->last_error;
+    }
+    protected function github_api_request($endpoint)
+    {
+        $response = null;
+        $http_response = $this->curler
+            ->uri("{$this->attributes['github-api-uri']}{$endpoint}")
+            ->auth($this->attributes['auth-name'], $this->attributes['auth-password'])
+            ->get();
+        if($http_response->status_code != '200')
+        {
+            $error_details = (array)json_decode($http_response->body(), true);
+            $error_message = isset($error_details['message']) ? $error_details['message'] : '';
+            $this->last_error = array(
+                'status_code' => $http_response->status_code,
+                'status_label' => $http_response->status_label,
+                'error_message'     => $error_message,
+            );
+        }
+        else
+        {
+            $response = new OctoObject($http_response->body());
+            $this->last_error = null;
+        }
+        return $response;
     }
 
 }

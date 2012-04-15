@@ -12,8 +12,11 @@ class MockResponseFactory
 {
     static function response($path)
     {
+        $response_string = file_exists(__DIR__."/{$path}.response")
+            ? file_get_contents(__DIR__."/{$path}.response")
+            : file_get_contents(__DIR__."/404.response");
         return new \Presta\Response(
-            file_get_contents(__DIR__."/{$path}.response"),
+            $response_string,
             true
         );
     }

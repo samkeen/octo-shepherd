@@ -8,7 +8,8 @@ spl_autoload_register(
          $classes = array(
             'octoshepherd\\generalshepherdtest' => '/unit/GeneralShepherdTest.php',
                 'octoshepherd\\mockresponsefactory' => '/response_stubs/MockResponseFactory.php',
-                'octoshepherd\\usertest' => '/unit/UserTest.php'
+                'octoshepherd\\octoobjecttest' => '/unit/OctoObjectTest.php',
+                'octoshepherd\\userstest' => '/unit/UsersTest.php'
           );
       }
       $cn = strtolower($class);
