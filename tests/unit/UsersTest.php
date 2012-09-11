@@ -102,7 +102,9 @@ class UsersTest extends \PHPUnit_Framework_TestCase
     
     
     /**
-     * 
+     * This mocks the Curl wrapper and the execute call is set to return the
+     * appropriate mock stored in folder response_stubs
+     *
      * @param string $endpoint
      * @return \Presta\Request
      * (actually returns: \PHPUnit_Framework_MockObject_MockObject)
