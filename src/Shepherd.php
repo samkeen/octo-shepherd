@@ -55,6 +55,32 @@ class Shepherd
     }
 
     /**
+     * Generate the auth request URI
+     * @see http://developer.github.com/v3/oauth/#web-application-flow
+     *
+     * @param string $client_id
+     * @param string $state
+     * @param array $scopes
+     * @return string
+     */
+    static function auth_request_uri($client_id, $state, $scopes=array())
+    {
+        $scopes = $scopes ? '&scope=' . implode(',',(array)$scopes) : "";
+        return "https://github.com/login/oauth/authorize?client_id={$client_id}&state={$state}{$scopes}";
+    }
+
+    /**
+     * Generate a unguessable single use state string to be used for Auth requests
+     * @see http://developer.github.com/v3/oauth/#web-application-flow
+     *
+     * @return string
+     */
+    static function generate_state_string()
+    {
+        return uniqid(mt_rand(1,999999));
+    }
+
+    /**
      * Calls API to return meta on the API logged in user
      *
      * @return null|OctoObject
@@ -62,6 +88,46 @@ class Shepherd
     function me()
     {
         return $this->github_api_request('/user');
+    }
+
+    /**
+     * Get the repos for the authenticated user
+     *
+     * @return null|OctoObject
+     */
+    function get_my_repos()
+    {
+        return $this->github_api_request('/user/repos');
+    }
+
+    /**
+     * Get the public repos for the given github user
+     *
+     * @param $user
+     * @param array $params
+     * @return null|OctoObject
+     */
+    function get_user_public_repos_for($user, $params = array())
+    {
+        $params = $params
+            ? "?" . implode('&', http_build_query($params))
+            : "";
+        return $this->github_api_request("/users/{$user}/repos{$params}");
+    }
+
+    /**
+     * Get the repos for an organization
+     * 
+     * @param $org_name
+     * @param array $params
+     * @return null|OctoObject
+     */
+    function get_org_repos_for($org_name, $params = array())
+    {
+        $params = $params
+            ? "?" . implode('&', http_build_query($params))
+            : "";
+        return $this->github_api_request("/orgs/{$org_name}/repos{$params}");
     }
 
     /**
