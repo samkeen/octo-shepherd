@@ -149,6 +149,17 @@ class Shepherd
         return $this->github_api_request("/users/{$username}");
     }
 
+    function get_path($user, $repo, $path, $params=array())
+    {
+        $path = trim($path, ' /');
+//        $params['path'] = $path;
+        // GET /repos/:user/:repo/contents/:path
+        $params = $params
+            ? "?" . http_build_query($params)
+            : "";
+        return $this->github_api_request("/repos/{$user}/{$repo}/contents/{$path}{$params}");
+    }
+
     /**
      * Utility for debugging
      *
@@ -176,13 +187,14 @@ class Shepherd
      * @param $endpoint
      * @return null|OctoObject
      */
-    protected function github_api_request($endpoint)
+    function github_api_request($endpoint)
     {
         $response = null;
         if($this->attributes['access_token'])
         {
+            $access_token_key = strstr($endpoint, '?') ? '&access_token=' : '?access_token=';
             $this->curler
-                ->uri("{$this->attributes['github-api-uri']}{$endpoint}?access_token={$this->attributes['access_token']}");
+                ->uri("{$this->attributes['github-api-uri']}{$endpoint}{$access_token_key}{$this->attributes['access_token']}");
         }
         else
         {
@@ -204,7 +216,7 @@ class Shepherd
         }
         else
         {
-            $response = new OctoObject($http_response->body());
+            $response = new OctoObject($http_response->body(), $http_response->headers());
             $this->last_error = null;
         }
         return $response;

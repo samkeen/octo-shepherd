@@ -14,7 +14,7 @@ class OctoObjectTest extends \PHPUnit_Framework_TestCase
      */
     function testInstantiateEmptyStringParamThrowsException()
     {
-        new OctoObject("");
+        new OctoObject("", array());
         $this->assertTrue(true);
     }
     /**
@@ -22,19 +22,19 @@ class OctoObjectTest extends \PHPUnit_Framework_TestCase
      */
     function testInstantiateInvalidJsonParamThrowsException()
     {
-        new OctoObject("i'm not valid JSON");
+        new OctoObject("i'm not valid JSON", array());
         $this->assertTrue(true);
     }
     
     function testInstantiateMinimalJsonNoExplosions()
     {
-        new OctoObject("[]");
+        new OctoObject("[]", array());
         $this->assertTrue(true);
     }
     
     function testExpectedKeysAccessibleAsAttributes()
     {
-        $octo = new OctoObject('{"name" : "bob"}');
+        $octo = new OctoObject('{"name" : "bob"}', array());
         $this->assertEquals(
             'bob',
             $octo->name,
@@ -44,7 +44,7 @@ class OctoObjectTest extends \PHPUnit_Framework_TestCase
     
     function testExpectedAttributesListReturned()
     {
-        $octo = new OctoObject('{"name" : "bob", "age" : "42"}');
+        $octo = new OctoObject('{"name" : "bob", "age" : "42"}', array());
         $this->assertEquals(
             array('name' => 'bob', 'age' => '42'),
             $octo->to_array()
@@ -53,7 +53,7 @@ class OctoObjectTest extends \PHPUnit_Framework_TestCase
     
     function testKeyNamesAreTransformedToLowerCase()
     {
-        $octo = new OctoObject('{"naMe" : "bob", "AGE" : "42"}');
+        $octo = new OctoObject('{"naMe" : "bob", "AGE" : "42"}', array());
         $this->assertEquals(
             array('name' => 'bob', 'age' => '42'),
             $octo->to_array()
@@ -62,25 +62,25 @@ class OctoObjectTest extends \PHPUnit_Framework_TestCase
     
     function testHasReturnsTrueForExpectedAttribute()
     {
-        $octo = new OctoObject('{"name" : "bob", "age" : "42"}');
+        $octo = new OctoObject('{"name" : "bob", "age" : "42"}', array());
         $this->assertTrue($octo->has('name'));
     }
     
     function testHasReturnsFalseForUnexpectedAttribute()
     {
-        $octo = new OctoObject('{"name" : "bob", "age" : "42"}');
+        $octo = new OctoObject('{"name" : "bob", "age" : "42"}', array());
         $this->assertFalse($octo->has('not_name'));
     }
     
     function testHasIsCaseInsensitive()
     {
-        $octo = new OctoObject('{"name" : "bob", "age" : "42"}');
+        $octo = new OctoObject('{"name" : "bob", "age" : "42"}', array());
         $this->assertTrue($octo->has('NaMe'));
     }
     
     function testGetAttributeByNameIsCaseInsensitive()
     {
-        $octo = new OctoObject('{"name" : "bob", "age" : "42"}');
+        $octo = new OctoObject('{"name" : "bob", "age" : "42"}', array());
         $this->assertEquals("bob", $octo->NaMe);
     }
     

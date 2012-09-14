@@ -16,12 +16,14 @@ class OctoObject
 {
     
     private $attributes = array();
+    private $response_headers = array();
 
     /**
      * @param string $serialized_state JSON string
+     * @param array $response_headers
      * @throws \InvalidArgumentException
      */
-    function __construct($serialized_state)
+    function __construct($serialized_state, $response_headers)
     {
         if(empty($serialized_state))
         {
@@ -29,6 +31,7 @@ class OctoObject
                 __METHOD__."  Empty value for \$serialized_state param is invalid"
             );
         }
+        $this->response_headers = $response_headers;
         $this->inflate($serialized_state);        
     }
 
@@ -42,6 +45,14 @@ class OctoObject
         return isset($this->attributes[$name])
             ? $this->attributes[$name]
             : null;
+    }
+    function get_header($key)
+    {
+        return isset($this->response_headers[$key]) ? $this->response_headers[$key] : null;
+    }
+    function get_headers()
+    {
+        return $this->response_headers;
     }
     /**
      * @param string $attribute_key
