@@ -109,10 +109,7 @@ class Shepherd
      */
     function get_user_public_repos_for($user, $params = array())
     {
-        $params = $params
-            ? "?" . implode('&', http_build_query($params))
-            : "";
-        return $this->github_api_request("/users/{$user}/repos{$params}");
+        return $this->github_api_request("/users/{$user}/repos" . $this->build_param_string($params));
     }
 
     /**
@@ -124,10 +121,47 @@ class Shepherd
      */
     function get_org_repos_for($org_name, $params = array())
     {
+        return $this->github_api_request("/orgs/{$org_name}/repos" . $this->build_param_string($params));
+    }
+
+    /**
+     * @param $user_name
+     * @param $repo_name
+     * @param array $params
+     * @return null|OctoObject
+     */
+    function list_branches($user_name, $repo_name, $params = array())
+    {
+        //GET /repos/:user/:repo/branches
+        return $this->github_api_request(
+            "/repos/{$user_name}/{$repo_name}/branches" . $this->build_param_string($params));
+    }
+
+    /**
+     * @param array $params
+     * @return string
+     */
+    protected function build_param_string($params)
+    {
+        return (array($params))
+            ? "?" . implode('&', http_build_query($params))
+            : "";
+    }
+
+    /**
+     * @param $user_name
+     * @param $repo_name
+     * @param $branch_name
+     * @param array $params
+     * @return null|OctoObject
+     */
+    function get_branch($user_name, $repo_name, $branch_name, $params = array())
+    {
+        //GET /repos/:user/:repo/branches/:branch
         $params = $params
             ? "?" . implode('&', http_build_query($params))
             : "";
-        return $this->github_api_request("/orgs/{$org_name}/repos{$params}");
+        return $this->github_api_request("/repos/{$user_name}/{$repo_name}/branches/{$branch_name}{$params}");
     }
 
     /**
