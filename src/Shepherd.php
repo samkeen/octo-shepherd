@@ -143,8 +143,8 @@ class Shepherd
      */
     protected function build_param_string($params)
     {
-        return (array($params))
-            ? "?" . implode('&', http_build_query($params))
+        return $params
+            ? "?" . implode('&', http_build_query((array)$params))
             : "";
     }
 
