@@ -119,7 +119,7 @@ class Shepherd
      * @param array $params
      * @return null|OctoObject
      */
-    function get_org_repos_for($org_name, $params = array())
+    function get_all_org_repos($org_name, $params = array())
     {
         return $this->github_api_request("/orgs/{$org_name}/repos" . $this->build_param_string($params));
     }
