@@ -165,6 +165,17 @@ class Shepherd
     }
 
     /**
+     * @param string $user
+     * @param string $repo_name
+     * @param array $params
+     * @return null|OctoObject
+     */
+    function get_tags($user, $repo_name, $params = array())
+    {
+        // GET /repos/:user/:repo/tags
+        return $this->github_api_request("/repos/{$user}/{$repo_name}/tags" . $this->build_param_string($params));
+    }
+    /**
      * Returns meta for the specified Github User
      *
      * @param $username
