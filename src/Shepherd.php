@@ -14,10 +14,12 @@ use Presta\Request;
 class Shepherd
 {
     private $attributes = array(
-        'github-api-uri' => 'https://api.github.com',
-        'auth-name'      => null,
-        'auth-password'  => null,
-        'access_token'   => null,
+        'github-api-uri'    => 'https://api.github.com',
+        'auth-name'         => null,
+        'auth-password'     => null,
+        'app_client_id'     => null,
+        'app_client_secret' => null,
+        'access_token'      => null,
     );
     /**
      * Stores the last error encountered with the guthub API
@@ -78,6 +80,32 @@ class Shepherd
     static function generate_state_string()
     {
         return uniqid(mt_rand(1,999999));
+    }
+
+    function exchange_auth_code_for_access_token($app_state_value, $response_state_value, $auth_code)
+    {
+        $access_token = null;
+        if( ! $this->attributes['app_client_id'] || ! $this->attributes['app_client_secret'])
+        {
+            throw new \ErrorException("app_client_id and/or app_client_secret not set."
+                . "@see http://developer.github.com/v3/oauth/"
+            );
+        }
+        if($app_state_value != $response_state_value)
+        {
+            throw new \ErrorException(
+                "Oauth recorded app state and response app state values did not match "
+                    . "'{$app_state_value}' != '{$response_state_value}'"
+                    . "@see http://developer.github.com/v3/oauth/"
+            );
+        }
+        if( ! $auth_code)
+        {
+            throw new \ErrorException("Oauth, auth code was empty.  Need a valid auth code to exchange for an access token"
+                . "@see http://developer.github.com/v3/oauth/");
+        }
+        $access_token = $this->access_token_request($auth_code, $app_state_value);
+        return $access_token;
     }
 
     /**
@@ -265,6 +293,35 @@ class Shepherd
             $this->last_error = null;
         }
         return $response;
+    }
+
+    protected function access_token_request($auth_code, $auth_state)
+    {
+        $result = $this->curler
+            ->uri('https://github.com/login/oauth/access_token')
+            ->headers(array('Accept: application/json'))
+            ->post(
+            array(
+                'client_id'     => $this->attributes['app_client_id'],
+                'client_secret' => $this->attributes['app_client_secret'],
+                'code'          => $auth_code,
+                'state'         => $auth_state
+            )
+        );
+        $response = json_decode($result->body(), true);
+        if( ! $response)
+        {
+            throw new \ErrorException("unable to json decode access token response: ".$result->body());
+        }
+        if( ! isset($response['access_token']))
+        {
+            throw new \ErrorException("Attempted to exchange the auth code for a Access Token, "
+                    . "but was unable to parse the access_token from the response. "
+                    . "The parsed JSON response was: <pre>" .print_r($response, true)
+                    . "</pre>"
+            );
+        }
+        return $response['access_token'];
     }
 
 }
