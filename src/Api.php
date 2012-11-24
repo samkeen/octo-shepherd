@@ -8,10 +8,14 @@
 namespace OctoShepherd;
 use Presta\Request;
 /**
- * Primary class for herding octocats
+ * The core API functionality class
+ *
+ * $api = new Api();
+ * $star_gazers = $api->activity->starring->get_repo_stargazers($owner, $repo);
+ *
  * @package OctoShepherd
  */
-class Shepherd
+class Api
 {
     private $attributes = array(
         'github-api-uri'    => 'https://api.github.com',
@@ -22,7 +26,7 @@ class Shepherd
         'access_token'      => null,
     );
     /**
-     * Stores the last error encountered with the guthub API
+     * Stores the last error encountered with the github API
      * i.e.
      * array(
      *   'status_code'   => $http_response->status_code,
@@ -55,6 +59,48 @@ class Shepherd
         $this->attributes = array_merge($this->attributes, (array)$config);
         $this->curler = $curler ?: new Request(array(CURLOPT_FOLLOWLOCATION => 0));
     }
+
+    function activity()
+    {
+        return new ActivityContext();
+    }
+    function gists()
+    {
+        return new GistsContext();
+    }
+    function git_data()
+    {
+        return new GitContext();
+    }
+    function issues()
+    {
+        return new IssuesContext();
+    }
+    function orgs()
+    {
+        return new OrgsContext();
+    }
+    function pull_requests()
+    {
+        return new PullContext();
+    }
+    function repositories()
+    {
+        return new RepositoriesContext();
+    }
+    function users()
+    {
+        return new UsersContext();
+    }
+    function search()
+    {
+        return new SearchContext();
+    }
+    function markdown()
+    {
+        return new MarkdownContext();
+    }
+
 
     /**
      * Generate the auth request URI
@@ -210,17 +256,17 @@ class Shepherd
      * @return null|OctoObject
      * @throws \InvalidArgumentException
      */
-    function users($username)
-    {
-        if(empty($username))
-        {
-            throw new \InvalidArgumentException(
-                __METHOD__." Empty values for param \$username is invalid"
-            );
-        }
-        $username = urlencode($username);
-        return $this->github_api_request("/users/{$username}");
-    }
+//    function users($username)
+//    {
+//        if(empty($username))
+//        {
+//            throw new \InvalidArgumentException(
+//                __METHOD__." Empty values for param \$username is invalid"
+//            );
+//        }
+//        $username = urlencode($username);
+//        return $this->github_api_request("/users/{$username}");
+//    }
 
     function get_path($user, $repo, $path, $params=array())
     {

@@ -11,19 +11,19 @@ class GeneralShepherdTest extends \PHPUnit_Framework_TestCase
 {   
     function testInstantiateEmptyParamsNoExplosions()
     {
-        new Shepherd();
+        new Api();
         $this->assertTrue(true, "Just testing that we are able to Instantiate");
     }
     
     function testInstantiateEmptyArrayParamNoExplosions()
     {
-        new Shepherd(array());
+        new Api(array());
         $this->assertTrue(true, "Just testing that we are able to Instantiate");
     }
     
     function testInstantiateKnownKeysNoExplosions()
     {
-        new Shepherd(array('auth-name' => 'bob', 'auth-password' => 'secret'));
+        new Api(array('auth-name' => 'bob', 'auth-password' => 'secret'));
         $this->assertTrue(true, "Just testing that we are able to Instantiate");
     }
     
@@ -32,12 +32,12 @@ class GeneralShepherdTest extends \PHPUnit_Framework_TestCase
      */
     function testInstantiateUnKnownKeysExplodes()
     {
-        new Shepherd(array('unknown-key' => 'bob', 'auth-password' => 'secret'));
+        new Api(array('unknown-key' => 'bob', 'auth-password' => 'secret'));
     }
     
     function testInstantiateWithPrestaNoExplosions()
     {
-        new Shepherd(array(), new \Presta\Request());
+        new Api(array(), new \Presta\Request());
         $this->assertTrue(true, "Just testing that we are able to Instantiate");
     }
 }

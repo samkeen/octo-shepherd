@@ -6,9 +6,13 @@ spl_autoload_register(
       static $classes = null;
       if ($classes === null) {
          $classes = array(
-            'octoshepherd\\generalshepherdtest' => '/unit/GeneralShepherdTest.php',
+            'octoshepherd\\generalcontextschainingtest' => '/unit/GeneralContextsChainingTest.php',
+                'octoshepherd\\generalcontextstest' => '/unit/GeneralContextsTest.php',
+                'octoshepherd\\generalshepherdtest' => '/unit/GeneralShepherdTest.php',
+                'octoshepherd\\generalsubcontextstest' => '/unit/GeneralSubContextsTest.php',
                 'octoshepherd\\mockresponsefactory' => '/response_stubs/MockResponseFactory.php',
                 'octoshepherd\\octoobjecttest' => '/unit/OctoObjectTest.php',
+                'octoshepherd\\requestertest' => '/unit/RequesterTest.php',
                 'octoshepherd\\userstest' => '/unit/UsersTest.php'
           );
       }

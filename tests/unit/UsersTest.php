@@ -16,7 +16,7 @@ class UsersTest extends \PHPUnit_Framework_TestCase
     
     function testMeReturnsOctoObject()
     {
-        $herder = new Shepherd(
+        $herder = new Api(
             array(),
             $this->get_response_mocking_curl_wrapper_for('/user')
         );
@@ -26,7 +26,7 @@ class UsersTest extends \PHPUnit_Framework_TestCase
     
     function testMeHasExpectedMinimumSetOfAttributes()
     {
-        $herder = new Shepherd(
+        $herder = new Api(
             array(),
             $this->get_response_mocking_curl_wrapper_for('/user')
         );
@@ -46,13 +46,13 @@ class UsersTest extends \PHPUnit_Framework_TestCase
      */
     function testUsersEmptyParamThrowsException()
     {
-        $herder = new Shepherd();
+        $herder = new Api();
         $herder->users('');
     }
     
     function testUsersReturnsOctoObject()
     {
-        $herder = new Shepherd(
+        $herder = new Api(
             array(),
             $this->get_response_mocking_curl_wrapper_for('/users/octocat')
         );
@@ -62,7 +62,7 @@ class UsersTest extends \PHPUnit_Framework_TestCase
     
     function testUsersReturnsExpectedUserAttribute()
     {
-        $herder = new Shepherd(
+        $herder = new Api(
             array(),
             $this->get_response_mocking_curl_wrapper_for('/users/octocat')
         );
@@ -77,7 +77,7 @@ class UsersTest extends \PHPUnit_Framework_TestCase
     function testUsersUnknownUserReturnsNull()
     {
         $username = 'not-a-user'.uniqid();
-        $herder = new Shepherd(
+        $herder = new Api(
             array(),
             $this->get_response_mocking_curl_wrapper_for("/users/{$username}")
         );
@@ -88,7 +88,7 @@ class UsersTest extends \PHPUnit_Framework_TestCase
     function testUsersUnknownUserLastErrorIs404()
     {
         $username = 'not-a-user'.uniqid();
-        $herder = new Shepherd(
+        $herder = new Api(
             array(),
             $this->get_response_mocking_curl_wrapper_for("/users/{$username}")
         );
