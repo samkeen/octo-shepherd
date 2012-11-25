@@ -3,7 +3,7 @@
  */
 namespace OctoShepherd;
 
-class GeneralContextsChainingTest extends \PHPUnit_Framework_TestCase
+class GeneralContextsChainingTest extends BaseTestCase
 {   
     function testInstantiateEmptyParamsNoExplosions()
     {

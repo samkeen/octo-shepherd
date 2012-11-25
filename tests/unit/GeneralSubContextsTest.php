@@ -3,7 +3,7 @@
  */
 namespace OctoShepherd;
 
-class GeneralSubContextsTest extends \PHPUnit_Framework_TestCase
+class GeneralSubContextsTest extends BaseTestCase
 {   
     function testInstantiateEmptyParamsNoExplosions()
     {

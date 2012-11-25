@@ -7,7 +7,7 @@
  */
 namespace OctoShepherd;
 
-class OctoObjectTest extends \PHPUnit_Framework_TestCase
+class OctoObjectTest extends BaseTestCase
 {
     /**
      * @expectedException \InvalidArgumentException

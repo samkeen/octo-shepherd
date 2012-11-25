@@ -11,6 +11,7 @@
  *     new OctoShepherd\Shepherd($config);
  */
 return array(
+    'base_url'      => 'https://api.github.com',
     'auth-name'     => 'your git username',  
     'auth-password' => 'your git password',  
 );

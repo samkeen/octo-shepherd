@@ -6,7 +6,8 @@ spl_autoload_register(
       static $classes = null;
       if ($classes === null) {
          $classes = array(
-            'octoshepherd\\generalcontextschainingtest' => '/unit/GeneralContextsChainingTest.php',
+            'octoshepherd\\basetestcase' => '/unit/BaseTestCase.php',
+                'octoshepherd\\generalcontextschainingtest' => '/unit/GeneralContextsChainingTest.php',
                 'octoshepherd\\generalcontextstest' => '/unit/GeneralContextsTest.php',
                 'octoshepherd\\generalshepherdtest' => '/unit/GeneralShepherdTest.php',
                 'octoshepherd\\generalsubcontextstest' => '/unit/GeneralSubContextsTest.php',

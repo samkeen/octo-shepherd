@@ -7,11 +7,54 @@
  */
 namespace OctoShepherd;
 
-class RequesterTest extends \PHPUnit_Framework_TestCase
-{   
-    function testInstantiateEmptyParamsNoExplosions()
+class RequesterTest extends BaseTestCase
+{
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    function testInstantiateEmptyParamsThrowsException()
     {
-        new Requester();
+        new Requester(array(), new \Presta\Request());
+    }
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    function testInstantiateExceptionIfOnlyAuthNameSupplied()
+    {
+        new Requester(array(
+            'base_url'  => 'https://api.github.com',
+            'auth_name' => 'foo'
+        ), new \Presta\Request());
+    }
+
+    function testInstantiateNoExceptionIfAccessTokenSupplied()
+    {
+        new Requester(array(
+            'base_url'     => 'https://api.github.com',
+            'access_token' => 'foo'
+        ), new \Presta\Request());
+        $this->assertTrue(true, "Just testing that we are able to Instantiate");
+    }
+
+    function testInstantiateNoExceptionIfAuthNameAndAuthPasswordSupplied()
+    {
+        new Requester(array(
+            'base_url'      => 'https://api.github.com',
+            'auth_name'     => 'bob',
+            'auth_password' => 'secret'
+        ), new \Presta\Request());
+        $this->assertTrue(true, "Just testing that we are able to Instantiate");
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    function testInstantiateExceptionIfAuthNameAndAuthPasswordSuppliedButNoBaseUrl()
+    {
+        new Requester(array(
+            'auth_name'     => 'bob',
+            'auth_password' => 'secret'
+        ), new \Presta\Request());
         $this->assertTrue(true, "Just testing that we are able to Instantiate");
     }
 
@@ -20,7 +63,10 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
      */
     function testGetExceptionForNoReplacementValues()
     {
-        $req = new Requester();
+        $req = new Requester(array(
+            'base_url'     => 'https://api.github.com',
+            'access_token' => 'foo'
+        ), new \Presta\Request());
         $req->get('/user/starred/:owner/:repo');
     }
     /**
@@ -28,7 +74,10 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
      */
     function testGetExceptionForTooFewReplacementValues()
     {
-        $req = new Requester();
+        $req = new Requester(array(
+            'base_url'     => 'https://api.github.com',
+            'access_token' => 'foo'
+        ), new \Presta\Request());
         $req->get('/user/starred/:owner/:repo', $owner='bob');
     }
     /**
@@ -36,14 +85,30 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
      */
     function testGetExceptionForTooManyReplacementValues()
     {
-        $req = new Requester();
+        $req = new Requester(array(
+            'base_url'     => 'https://api.github.com',
+            'access_token' => 'foo'
+        ), new \Presta\Request());
         $req->get('/user/starred/:owner/:repo', $owner='bob', $repo='foo', $bar='baz');
     }
 
     function testGetNoExceptionForProperAmountOfReplacementValues()
     {
-        $req = new Requester();
-        $req->get('/user/starred/:owner/:repo', $owner='bob', $repo='foo');
+        new Requester(array(
+            'base_url'     => 'https://api.github.com',
+            'auth_name'     => 'bob',
+            'auth_password' => 'secret!'
+        ), new \Presta\Request());
+    }
+
+    function testGetProperResponse()
+    {
+        $req = new Requester(array(
+            'base_url'     => 'https://api.github.com',
+            'auth_name'     => 'bob',
+            'auth_password' => 'secret!'
+        ), $this->get_response_mocking_curl_wrapper_for('/users/octocat/starred'));
+        $response = $req->get('/users/:user/starred', $user='octocat');
     }
 
 }

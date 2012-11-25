@@ -12,9 +12,12 @@ class MockResponseFactory
 {
     static function response($path)
     {
-        $response_string = file_exists(__DIR__."/{$path}.response")
-            ? file_get_contents(__DIR__."/{$path}.response")
-            : file_get_contents(__DIR__."/404.response");
+        $response_content_file_path = __DIR__."/{$path}.response";
+        if( ! file_exists($response_content_file_path))
+        {
+            throw new \InvalidArgumentException("Response content file [{$response_content_file_path}] NOT found in response stubs dir");
+        }
+        $response_string = file_get_contents(__DIR__."/{$path}.response");
         return new \Presta\Response(
             $response_string,
             true

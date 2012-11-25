@@ -7,7 +7,7 @@
  */
 namespace OctoShepherd;
 
-class GeneralShepherdTest extends \PHPUnit_Framework_TestCase
+class GeneralShepherdTest extends BaseTestCase
 {   
     function testInstantiateEmptyParamsNoExplosions()
     {
